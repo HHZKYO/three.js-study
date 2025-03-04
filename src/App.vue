@@ -11,10 +11,26 @@ renderer.setSize( window.innerWidth, window.innerHeight ); // 步骤1.三要素
 document.body.appendChild( renderer.domElement ); // 步骤1.三要素
 const controls = new OrbitControls( camera, renderer.domElement ); // 步骤3
 
+// 步骤4.放入物体
 const geometry = new THREE.SphereGeometry( 15, 32, 16 ); // 步骤4.放入物体
 const material = new THREE.MeshBasicMaterial( { color: 0x0000ff } ); // 步骤4.放入物体
 const sphere = new THREE.Mesh( geometry, material ); // 步骤4.放入物体
 scene.add( sphere );
+
+// 步骤7.环境贴图，添加场景的背景
+// CubeTextureLoader：立方体纹理加载器（专门用来加载 6 张图片包裹盒的）
+const cubeTL = new THREE.CubeTextureLoader()
+// 调用 load 方法，按 x 正负，y 正负，z 正负的顺序传入相应的图片
+const cubeTexture = cubeTL.load([
+  // vite 构建工具：js 中加载静态资源要使用这种格式：new URL('静态资源路径'，import.meta.url).href
+  new URL('@/assets/sky/1.jpg', import.meta.url).href,
+  new URL('@/assets/sky/2.jpg', import.meta.url).href,
+  new URL('@/assets/sky/3.jpg', import.meta.url).href,
+  new URL('@/assets/sky/4.jpg', import.meta.url).href,
+  new URL('@/assets/sky/5.jpg', import.meta.url).href,
+  new URL('@/assets/sky/6.jpg', import.meta.url).href,
+])
+scene.background = cubeTexture
 
 // 步骤6.适配
 window.addEventListener('resize', () => {
