@@ -32,6 +32,26 @@ const cubeTexture = cubeTL.load([
 ])
 scene.background = cubeTexture
 
+// 步骤8.光线投射 —> 鼠标拾取
+// 创建光线投射对象
+const raycaster = new THREE.Raycaster();
+// 初始化二维坐标点（空）
+const pointer = new THREE.Vector2();
+// 点击事件处理函数
+function onPointerMove( event ) {
+  // 将鼠标位置归一化为设备坐标。x 和 y 方向的取值范围是 (-1 to +1)
+  pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+  pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+  // 通过摄像机和鼠标位置更新射线
+  raycaster.setFromCamera( pointer, camera );
+  // 计算物体和射线的焦点
+  const intersects = raycaster.intersectObjects( scene.children );
+  for ( let i = 0; i < intersects.length; i ++ ) {
+    intersects[ i ].object.material.color.set( 0xff0000 );
+  }
+}
+window.addEventListener( 'click', onPointerMove );
+
 // 步骤6.适配
 window.addEventListener('resize', () => {
   // 画布的最新宽高
