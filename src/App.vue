@@ -36,6 +36,25 @@ gltfLoader.load(
   }
 );
 
+// 环境贴图
+// const cubeTL = new THREE.CubeTextureLoader()
+// const cubeTexture = cubeTL.load([
+//   new URL('@/assets/sky/1.jpg', import.meta.url).href,
+//   new URL('@/assets/sky/2.jpg', import.meta.url).href,
+//   new URL('@/assets/sky/3.jpg', import.meta.url).href,
+//   new URL('@/assets/sky/4.jpg', import.meta.url).href,
+//   new URL('@/assets/sky/5.jpg', import.meta.url).href,
+//   new URL('@/assets/sky/6.jpg', import.meta.url).href,
+// ])
+// scene.background = cubeTexture
+const texture = new THREE.TextureLoader().load(
+  new URL("@/assets/desert.jpg", import.meta.url).href
+);
+// 设置图片对比度和环绕方式
+texture.colorSpace = THREE.SRGBColorSpace;
+texture.mapping = THREE.EquirectangularReflectionMapping;
+scene.background = texture;
+
 function renderLoop() {
   renderer.render(scene, camera)
   controls.update()
