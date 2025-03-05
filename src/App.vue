@@ -12,7 +12,7 @@ const gltfLoader = new GLTFLoader();
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 5
+camera.position.set(5, 2, 3)
 const renderer = new THREE.WebGLRenderer()
 renderer.setSize(window.innerWidth, window.innerHeight)
 document.body.appendChild(renderer.domElement)
@@ -54,6 +54,16 @@ const texture = new THREE.TextureLoader().load(
 texture.colorSpace = THREE.SRGBColorSpace;
 texture.mapping = THREE.EquirectangularReflectionMapping;
 scene.background = texture;
+
+// 设置地面
+// 加载图片得到纹理对象
+const floorTexture = new THREE.TextureLoader().load(new URL('@/assets/sand.jpg', import.meta.url).href)
+floorTexture.colorSpace = THREE.SRGBColorSpace;
+const geometry = new THREE.CircleGeometry( 10, 32 );
+const material = new THREE.MeshBasicMaterial( { map: floorTexture } );
+const circle = new THREE.Mesh( geometry, material );
+scene.add( circle );
+circle.rotation.set(-Math.PI / 2, 0, 0)
 
 function renderLoop() {
   renderer.render(scene, camera)
